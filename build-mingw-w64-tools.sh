@@ -78,7 +78,7 @@ if [ -n "$MACOS_REDIST" ]; then
     if [ -z "$CFLAGS" ]; then
         CFLAGS="-g -O2"
     fi
-    : ${MACOS_REDIST_ARCHS:=arm64 x86_64}
+    : ${MACOS_REDIST_ARCHS:=x86_64}
     : ${MACOS_REDIST_VERSION:=10.12}
     NONNATIVE_ARCH=
     for arch in $MACOS_REDIST_ARCHS; do
