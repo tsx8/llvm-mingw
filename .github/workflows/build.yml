@@ -75,6 +75,7 @@ jobs:
           TAG: ${{needs.prepare.outputs.TAG}}
           SOURCE_DATE_EPOCH: ${{needs.prepare.outputs.COMMIT_DATE_UNIX}}
           BUILD_DATE: ${{needs.prepare.outputs.BUILD_DATE}}
+          TOOLCHAIN_ARCHS: "x86_64"
         run: |
           # Skip dynamic library dependencies that might make it harder to
           # run the binaries on other distros (and that have little use within
@@ -125,6 +126,7 @@ jobs:
           TAG: ${{needs.prepare.outputs.TAG}}
           SOURCE_DATE_EPOCH: ${{needs.prepare.outputs.COMMIT_DATE_UNIX}}
           BUILD_DATE: ${{needs.prepare.outputs.BUILD_DATE}}
+          TOOLCHAIN_ARCHS: "x86_64"
         run: |
           sudo apt-get update && sudo apt-get install libltdl-dev swig autoconf-archive
           ./build-cross-tools.sh /opt/llvm-mingw $(pwd)/install/llvm-mingw ${{matrix.arch}} --with-python --thinlto
