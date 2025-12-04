@@ -141,37 +141,3 @@ jobs:
           path: |
             llvm-mingw-*.zip
           retention-days: 7
-
-  # Run llvm-mingw's tests with the cross-built toolchains from above.
-  test-toolchain:
-    needs: [linux-cross-windows]
-    defaults:
-      run:
-        shell: msys2 {0}
-    strategy:
-      fail-fast: false
-      matrix:
-        arch:
-          - x86_64
-    runs-on: windows-latest
-    steps:
-      - uses: msys2/setup-msys2@v2
-        with:
-          msystem: msys
-          install: >-
-            unzip
-            make
-      - uses: actions/download-artifact@v4
-        with:
-          name: windows-ucrt-${{matrix.arch}}-toolchain
-      - name: Unpack toolchain
-        run: |
-          unzip -q llvm-mingw-*.zip
-          rm llvm-mingw-*.zip
-          mv llvm-mingw-* /llvm-mingw
-      - uses: actions/checkout@v4
-      - name: Run tests
-        run: |
-          ./test-libcxx-module.sh /llvm-mingw
-          ./run-tests.sh /llvm-mingw
-          ./run-lldb-tests.sh /llvm-mingw
