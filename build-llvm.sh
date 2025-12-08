@@ -214,7 +214,8 @@ if [ -n "$HOST" ]; then
             i686)   RT_ARCH="i386" ;;
             armv7)  RT_ARCH="arm" ;;
         esac
-        CMAKEFLAGS="$CMAKEFLAGS -DCMAKE_EXE_LINKER_FLAGS=-Wl,--export-all-symbols;-Wl,--whole-archive;-lclang_rt.builtins-$RT_ARCH;-Wl,--no-whole-archive"
+        LINKER_FLAGS="-Wl,--export-all-symbols,--whole-archive,-lclang_rt.builtins-$RT_ARCH,--no-whole-archive"
+        CMAKEFLAGS="$CMAKEFLAGS -DCMAKE_EXE_LINKER_FLAGS=$LINKER_FLAGS"
         ;;
     *-linux*)
         CMAKEFLAGS="$CMAKEFLAGS -DCMAKE_SYSTEM_NAME=Linux"
