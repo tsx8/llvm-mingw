@@ -209,7 +209,12 @@ if [ -n "$HOST" ]; then
     *-mingw32)
         CMAKEFLAGS="$CMAKEFLAGS -DCMAKE_SYSTEM_NAME=Windows"
         CMAKEFLAGS="$CMAKEFLAGS -DCMAKE_RC_COMPILER=$HOST-windres"
-        CMAKEFLAGS="$CMAKEFLAGS -DCMAKE_EXE_LINKER_FLAGS=-Wl,--export-all-symbols -Wl,--undefined=___chkstk_ms"
+        RT_ARCH="${HOST%%-*}"
+        case $RT_ARCH in
+            i686)   RT_ARCH="i386" ;;
+            armv7)  RT_ARCH="arm" ;;
+        esac
+        CMAKEFLAGS="$CMAKEFLAGS -DCMAKE_EXE_LINKER_FLAGS=-Wl,--export-all-symbols;-Wl,--whole-archive;-lclang_rt.builtins-$RT_ARCH;-Wl,--no-whole-archive"
         ;;
     *-linux*)
         CMAKEFLAGS="$CMAKEFLAGS -DCMAKE_SYSTEM_NAME=Linux"
